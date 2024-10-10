@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2{% endblock %}
+
+
+{#основной контент: #}
+{% block main %}
+    <h1>Шаблоны</h1>
+    <div>Тема лабораторной - шаблоны. Список сделанных страниц:</div>
+    <ol>
+        <li>
+            <a href="/lab2/example">example</a>
+        </li>
+        <li>
+            <a href="/lab2/filters">filters</a>
+        </li>
+        <li>
+            <a href="/lab2/all_flowers">all_flowers</a>
+        </li>
+        <li>
+            <a href="/lab2/flower">flowers_id</a>
+        </li>
+        <li>
+            <a href="/lab2/flowers/clear">clear flowers</a>
+        </li>
+        <li>
+            <a href="/lab2/calc">calc</a>
+        </li>
+        <li>
+            <a href="/lab2/books">books</a>
+        </li>
+        <li>
+            <a href="/lab2/mops">mops</a>
+        </li>
+    </ol>
+    <div>
+        <a href="http://127.0.0.1:5000/menu">
+            <img src="../static/strelka.png" class='strelka'>
+        </a>
+        <a href="http://127.0.0.1:5000/menu" class='backmenu'>Вернуться в главное меню</a>
+    </div>
+{% endblock %}

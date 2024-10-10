@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2{% endblock%}
+
+{# основной контент: #}
+{% block main %}
+    <h1>Мопсики:</h1>
+    {% for m in mops_list %}
+        <img src="{{ m.photo }}" alt="{{ m.title }}" width="200">
+        <p style="font-size: 23px; margin: 0 auto">{{ m.title }}</p><br>
+        <p style="color: #969191; margin-top: 0; max-width: 400px">{{ m.description }}</p><br>
+    {% endfor %}
+{% endblock %}

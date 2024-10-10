@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2{% endblock%}
+
+
+{# основной контент: #}
+{% block main %}
+    <h1>Список всех цветов</h1>
+    <ul>
+        {% for flower in all_flower_list %}
+            <li>{{ flower.name }}: {{ flower.kolvo }} шт - {{flower.price}} &#x20bd - <a href="{{ url_for('lab2.del_flower', name=flower.name) }}">удалить</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('lab2.clear_flowers') }}">Очистить список цветов</a><br>
+    <!-- <p>Добавить цветок: <input type="text" class="flowerInput" placeholder="Название цветка"> <button class="flowerButton"> добавить</button></p> -->
+    <p>Добавить цветок:</p>
+    <input type="text" id="flowerInput" class="flowerInput" placeholder="Название цветка">
+    <button id="addFlowerButton" class="flowerButton"> добавить</button>
+
+<script>
+    document.getElementById('addFlowerButton').addEventListener('click', function() {
+        var flowerName = document.getElementById('flowerInput').value;
+        if (flowerName) {
+            // Перенаправление на URL с параметром названия цветка для добавления
+            window.location.href = "{{ url_for('lab2.add_flower', name='') }}" + flowerName;
+        } else {
+            alert('Введите название цветка');
+        }
+    });
+</script>
+
+{% endblock %}
