@@ -1,5 +1,9 @@
 from flask import Flask, redirect, url_for, render_template
+from lab2 import lab2
 app = Flask(__name__)
+app.register_blueprint(lab2)
+
+
 
 @app.route("/")
 @app.route("/index")
@@ -218,10 +222,12 @@ def add_flower(name):
 </html>
 '''
 
-@app.route('/lab2/example')
+@app.route('/lab2')
 def example():
     name = 'Захаров Илья'
     group = 'ФБИ-24'
     number = '2'
     curs = '3'
-    return render_template('example.html', name=name, group=group, number=number, curs=curs)
+    return render_template('lab2.html', name=name, group=group, number=number, curs=curs)
+
+

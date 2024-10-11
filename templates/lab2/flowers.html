@@ -6,6 +6,7 @@
 
 {# основной контент: #}
 {% block main %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <h1>Список всех цветов</h1>
     <ul>
         {% for flower in all_flower_list %}

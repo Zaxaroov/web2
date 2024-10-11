@@ -5,6 +5,7 @@
 
 {# основной контент: #}
 {% block main %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <h1>Результаты:</h1>
     <div class="math">
         {{a}} + {{b}} = {{a + b}}<br>
