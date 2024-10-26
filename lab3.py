@@ -68,3 +68,77 @@ def pay():
 def success():
     price = request.args.get('price', type=int)
     return render_template('/lab3/success.html', price=price)
+
+
+@lab3.route('/lab3/settings')
+def settings():
+    color = request.args.get('color')
+    bg_color = request.args.get('bg_color')
+    font_size = request.args.get('font_size')
+    font_family = request.args.get('font_family')
+
+    resp = make_response(redirect('/lab3/settings'))
+
+    if color:
+        resp.set_cookie('color', color)
+    if bg_color:
+        resp.set_cookie('bg_color', bg_color)
+    if font_size:
+        resp.set_cookie('font_size', font_size)
+    if font_family:
+        resp.set_cookie('font_family', font_family)
+        return resp
+
+    # Получаем значения из cookies для отображения
+    color = request.cookies.get('color')
+    bg_color = request.cookies.get('bg_color')
+    font_size = request.cookies.get('font_size')
+    font_family = request.cookies.get('font_family')
+
+    return render_template('lab3/settings.html', color=color, bg_color=bg_color, font_size=font_size, font_family=font_family)
+
+
+@lab3.route('/lab3/clear_settings')
+def clear_settings():
+    resp = make_response(redirect('/lab3/settings'))
+    
+    resp.delete_cookie('color')
+    resp.delete_cookie('bg_color')
+    resp.delete_cookie('font_size')
+    resp.delete_cookie('font_family')
+    return resp
+
+@lab3.route('/lab3/ticket')
+def ticket():
+    return render_template('/lab3/ticket.html')
+
+@lab3.route('/lab3/ticket1')
+def ticket1():
+    fio = request.args.get('fio')
+    shelf = request.args.get('shelf')
+    bedding = 'bedding' in request.args
+    luggage = 'luggage' in request.args
+    age = int(request.args.get('age'))
+    departure = request.args.get('departure')
+    destination = request.args.get('destination')
+    date = request.args.get('date')
+    insurance = 'insurance' in request.args
+    # Вычисление цены билета
+    ticket_price = 1000 if age >= 18 else 700
+    if shelf in ['lower', 'lower_side']:
+        ticket_price += 100
+    if bedding:
+        ticket_price += 75
+    if luggage:
+        ticket_price += 250
+    if insurance:
+        ticket_price += 150
+
+    # Определение типа билета
+    if age < 18:
+        ticket_type = 'Детский билет'
+    else:
+        ticket_type = 'Взрослый билет'
+    return render_template('/lab3/ticket1.html', fio=fio, shelf=shelf, bedding=bedding, luggage=luggage,
+                               age=age, departure=departure, destination=destination, date=date,
+                               insurance=insurance, ticket_type=ticket_type, price=ticket_price)
