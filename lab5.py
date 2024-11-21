@@ -130,4 +130,34 @@ def create():
     db_close(conn, cur)
     return redirect('/lab5')
 
+@lab5.route('/lab5/list')
+def list():
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    conn, cur = db_connect()
+    
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
+    else:
+        cur.execute("SELECT id FROM users WHERE login=?;", (login,))
+    
+    user = cur.fetchone()
+    user_id = user["id"] if user else None
+    
+    
+    if user_id is None:
+        db_close(conn, cur)
+        return redirect('/lab5/login')
+
+    cur.execute("SELECT * FROM articles WHERE user_id=%s;", (user_id,))
+    articles = cur.fetchall()
+    
+    db_close(conn, cur)
+    
+    if not articles: 
+        return render_template('/lab5/articles.html', articles=articles, message="У вас нет ни одной статьи.")
+    
+    return render_template('/lab5/articles.html', articles=articles)
 
