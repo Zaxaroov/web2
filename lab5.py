@@ -97,4 +97,37 @@ def login():
     return render_template('lab5/success_login.html', login=login)
 
 
+@lab5.route('/lab5/create', methods=['GET', 'POST'])
+def create():
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+    
+    if request.method == 'GET':
+        return render_template('lab5/create_article.html')
+    
+    title = request.form.get('title')
+    article_text = request.form.get('article_text')
+
+    conn, cur = db_connect()
+    
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
+    else:
+        cur.execute("SELECT id FROM users WHERE login=?;", (login,))
+
+    user = cur.fetchone()
+    user_id = user["id"] if user else None
+    
+    if user_id is None:
+        db_close(conn, cur)
+        return redirect('/lab5/login')
+    
+    if not title or not article_text:
+        return render_template('lab5/create_article.html', error='Название и текст статьи не могут быть пустыми.')
+
+    cur.execute("INSERT INTO articles (user_id, title, article_text) VALUES (%s, %s, %s);", (user_id, title, article_text))
+    db_close(conn, cur)
+    return redirect('/lab5')
+
 
