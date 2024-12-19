@@ -60,3 +60,47 @@ def del_film(id):
     db_close(conn, cur, commit=True)
     return '', 204
 
+@lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
+def put_film(id):
+    film = request.get_json()
+    conn, cur = db_connect()
+
+    if not film.get('title_ru'):
+        return {'title_ru': 'Русское название обязательно'}, 400
+
+    if film.get('description', '') == '':
+        return {'description': 'Описание обязательно'}, 400
+
+    if film['year'] < 1895 or film['year'] > 2023:
+        return {'year': 'Год должен быть между 1895 и 2023'}, 400
+
+    if not film.get('title') and film['title_ru']:
+        film['title'] = film['title_ru']
+
+    update_query = """
+        UPDATE films 
+        SET title = %s, title_ru = %s, year = %s, description = %s 
+        WHERE id = %s;
+    """ if current_app.config['DB_TYPE'] == 'postgres' else """
+        UPDATE films 
+        SET title = ?, title_ru = ?, year = ?, description = ? 
+        WHERE id = ?;
+    """
+    
+    params = (
+        film['title'],
+        film['title_ru'],
+        film['year'],
+        film['description'],
+        id
+    ) if current_app.config['DB_TYPE'] == 'postgres' else (
+        film['title'],
+        film['title_ru'],
+        film['year'],
+        film['description'],
+        id
+    )
+    
+    cur.execute(update_query, params)
+    db_close(conn, cur, commit=True)
+    return film
