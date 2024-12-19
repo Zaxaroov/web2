@@ -52,3 +52,11 @@ def get_film(id):
         abort(404)
     return dict(film)
 
+@lab7.route('/lab7/rest-api/films/<int:id>', methods=['DELETE'])
+def del_film(id):
+    conn, cur = db_connect()
+    query = "DELETE FROM films WHERE id = %s;" if current_app.config['DB_TYPE'] == 'postgres' else "DELETE FROM films WHERE id = ?;"
+    cur.execute(query, (id,) if current_app.config['DB_TYPE'] == 'postgres' else (id,))
+    db_close(conn, cur, commit=True)
+    return '', 204
+
