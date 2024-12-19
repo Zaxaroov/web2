@@ -104,3 +104,45 @@ def put_film(id):
     cur.execute(update_query, params)
     db_close(conn, cur, commit=True)
     return film
+
+@lab7.route('/lab7/rest-api/films/', methods=['POST'])
+def add_film():
+    new_film = request.get_json()
+    
+    if not new_film.get('title_ru'):
+        return {'title_ru': 'Русское название обязательно'}, 400
+
+    if new_film['description'] == '' or len(new_film['description']) > 2000:
+        return {'description': 'Описание обязательно и не может превышать 2000 символов'}, 400
+
+    if new_film['year'] < 1895 or new_film['year'] > 2023:
+        return {'year': 'Год должен быть между 1895 и 2023'}, 400
+
+    if not new_film.get('title') and new_film['title_ru']:
+        new_film['title'] = new_film['title_ru']
+    
+    conn, cur = db_connect()
+    
+    insert_query = """
+        INSERT INTO films (title, title_ru, year, description) 
+        VALUES (%s, %s, %s, %s);
+    """ if current_app.config['DB_TYPE'] == 'postgres' else """
+        INSERT INTO films (title, title_ru, year, description) 
+        VALUES (?, ?, ?, ?);
+    """
+    
+    params = (
+        new_film['title'],
+        new_film['title_ru'],
+        new_film['year'],
+        new_film['description']
+    ) if current_app.config['DB_TYPE'] == 'postgres' else (
+        new_film['title'],
+        new_film['title_ru'],
+        new_film['year'],
+        new_film['description']
+    )
+    
+    cur.execute(insert_query, params)
+    db_close(conn, cur, commit=True)
+    return '', 201
