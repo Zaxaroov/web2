@@ -7,7 +7,7 @@ offices = []
 for i in range(1, 11):
     offices.append({"number": i, "tenant": "", "price": 1000})
 
-@lab6.route('/lab6')
+@lab6.route('/lab6/')
 def main():
     return render_template('lab6/lab6.html')
 
