@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+    <h1>База знаний</h1>
+    <ol class="ol5laba">
+        {% if login == 'Anonymous' %}
+            <li><a href="/lab8/login" class="a5laba">Вход</a></li>
+            <li><a href="/lab8/register" class="a5laba">Регистрация</a></li>
+        {% endif %}
+        <li><a href="/lab8/list" class="a5laba">Список статей</a></li>
+        <li><a href="/lab8/create" class="a5laba">Создать статью</a></li>
+        <li><a href="/lab8/public_articles" class="a5laba">Публичные статьи</a></li>
+        {% if login != 'Anonymous' %}
+            <li><a href="/lab8/users" class="a5laba">Все пользователи</a></li>
+            <li><form action="/lab8/logout" method="post" class="form-reg">
+                <button class="button">Выход</button>
+            </form></li>
+        {% endif %}
+        <li>{{ login }}</li>
+    </ol>
+{% endblock %}

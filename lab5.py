@@ -58,7 +58,7 @@ def login():
     
     if not check_password_hash (user['password'], password):
         db_close(conn, cur)
-        return render_template ('lab2/login.html', error='Логин и/или пароль неверны')
+        return render_template ('lab5/login.html', error='Логин и/или пароль неверны')
     
     session['login'] = login
     db_close(conn, cur)
