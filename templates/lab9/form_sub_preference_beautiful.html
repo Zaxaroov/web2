@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Что вам больше нравится?</h2>
+<form action="/lab9/congratulations" method="post">
+    <button type="submit" name="sub_preference" value="sport" >Спортивное</button>
+    <button type="submit" name="sub_preference" value="jewelry" >Украшения</button>
+</form>
+{% endblock %}

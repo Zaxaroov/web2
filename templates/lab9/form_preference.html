@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Что вам больше нравится?</h2>
+<form action="/lab9/sub_preference" method="post">
+    <button type="submit" name="preference" value="tasty" >Что-то вкусное</button>
+    <button type="submit" name="preference" value="interesting" >Что-то интересное</button>
+</form>
+{% endblock %}

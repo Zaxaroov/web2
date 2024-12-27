@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>{{ message }}</h2>
+<div class="image" style="text-align: center;">
+    <img src="{{ image }}" alt="Подарок" style="max-width: 100%; border: 2px solid #fff; text-align: center;">
+</div>
+<form action="/lab9/reset" method="post">
+    <button type="submit" name="reset" value="reset">Обновить</button>
+</form>
+{% endblock %}

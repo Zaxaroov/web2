@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Введите ваше имя</h2>
+<form action="/lab9/age" method="post">
+    <input type="text" name="name" required placeholder="Ваше имя">
+    <button type="submit">Далее</button>
+</form>
+{% endblock %}

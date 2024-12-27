@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+    <h1>Поиск статей</h1>
+    <form method="get" action="/lab8/search_articles">
+        <input type="text" name="query" placeholder="Текст для поиска..." class="inputC">
+        <div>
+            <button type="submit" name="search_type" value="own" class="btnGray">Искать по своим статьям</button>
+            <button type="submit" name="search_type" value="public" class="btnGray">Искать по публичным статьям</button>
+        </div>
+    </form>
+    {% if error %}
+        <span class="error">{{ error }}</span>
+    {% endif %}
+    {% if articles %}
+        <h2>Результаты поиска</h2>
+        {% for article in articles %}
+            <h2>{{ article['title'] }}</h2>
+            <blockquote>{{ article['article_text'] }}</blockquote> <br>
+            <p><strong>Избранное:</strong> {{ 'Да' if article['is_favorite'] else 'Нет' }}</p>
+        {% endfor %}
+    {% else %}
+        {% if not error %}
+            <p>Публичных статей нет</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

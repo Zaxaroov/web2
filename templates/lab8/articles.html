@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+    <h1>Ваши статьи</h1>
+    {% if articles %}
+        {% for article in articles %}
+            <h2>{{ article['title'] }}</h2>
+            <blockquote>{{ article['article_text'] }}</blockquote> <br>
+            <p><strong>Избранное:</strong> {{ 'Да' if article['is_favorite'] else 'Нет' }}</p>
+            <form action="/lab8/edit_article/{{ article['id'] }}" method="get" class="form-reg">
+                <button class="button button-users">Редактировать статью</button>
+            </form>
+            <form action="/lab8/delete_article" method="post" class="form-reg">
+                <input type="hidden" name="article_id" value="{{ article['id'] }}">
+                <button class="button button-users">Удалить статью</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        <h2>У вас нет ещё ни одной статьи</h2>
+    {% endif %}
+{% endblock %}
